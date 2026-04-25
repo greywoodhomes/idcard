@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greywood Homes – Employee ID</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  min-height:100vh;
+  background:#e6e6e6;
+  background-image:none;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:44px;font-family:'Outfit',sans-serif;padding:48px 20px;
+}
+
+.page-label {
+  color:rgba(17,20,37,0.45);font-size:10px;
+  letter-spacing:5px;text-transform:uppercase;font-weight:500;
+}
+
+.cards-row {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(348px,1fr));
+  gap:44px;
+  justify-items:center;
+  align-items:start;
+  max-width:1200px;
+}
+
+/* ── CARD ── */
+.id-card {
+  width:min(348px,100%);border-radius:22px;overflow:hidden;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.07),
+    0 24px 60px rgba(0,0,0,0.65),
+    0 6px 20px rgba(0,0,0,0.4);
+  animation:rise 0.85s cubic-bezier(.22,1,.36,1) both;
+  height:100%; /* NEW: Make cards fill grid row height */
+}
+.id-card.back{ animation-delay:0.13s; }
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(36px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 20px 16px;
+  }
+
+  .cards-row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .front-top {
+    height: 95px;
+  }
+
+  .identity-block {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-row > div {
+    width: 100%;
+  }
+
+  .back-logo-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .back-wordmark-wrap {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 420px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .identity-block,
+  .info-section,
+  .front-footer,
+  .back-header,
+  .back-contacts,
+  .back-notice {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .logo-row img,
+  .logo-icon,
+  .back-icon {
+    max-width: 100%;
+  }
+
+  .photo-ring {
+    width: 72px;
+    height: 72px;
+  }
+
+  .emp-name {
+    font-size: 16px;
+  }
+
+  .emp-role,
+  .dept-tag span,
+  .i-label,
+  .i-val,
+  .c-label,
+  .c-val,
+  .notice-text p {
+    font-size: 10px;
+  }
+
+  .material-icons,
+  .i-icon,
+  .c-icon,
+  .notice-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* ══ FRONT ══ */
+.card-front{ 
+  background:#efefef;
+  display:flex;
+  flex-direction:column;
+  height:100%; /* NEW: Fill card height */
+}
+
+/* Dark top band */
+/* .front-top{
+  background:#111425;
+  padding:20px 22px 20px;
+  position:relative;overflow:hidden;
+} */
+/* Subtle grid */
+/* .front-top::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:24px 24px;
+} */
+
+*,*::before,*::after{box-sizing:border-box;margin: -1px;padding:0}
+
+/* ───────── FRONT TOP (LOGO AREA) ───────── */
+
+.front-top {
+  position: relative;
+  overflow: hidden;
+  height: 110px;
+
+  padding: 0;          /* ❌ remove spacing */
+  margin: 0;
+  line-height: 0;      /* 🔥 removes inline image gap */
+}
+
+.front-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background: url('logo.png') no-repeat center; */
+  background-size: cover;
+  z-index: 1;
+}
+
+/* ───────── LOGO ROW ───────── */
+.logo-row {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center logo */
+}
+
+/* SMALL ICON (OPTIONAL) */
+.logo-icon{
+  width:50px;
+  height:50px;
+  border-radius:13px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  padding:6px;
+  object-fit:contain;
+}
+
+/* IDENTITY BLOCK ICON */
+.identity-logo-icon{
+  width:46px;
+  height:46px;
+  border-radius:14px;
+  object-fit:contain;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  padding:4px;
+}
+
+/* MAIN WORDMARK LOGO (RESPONSIVE) */
+.logo-wordmark{
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  /* padding: 0 10px; */
+}
+
+/* RED LINE */
+.red-line{
+  height:3px;
+  background:linear-gradient(90deg,#e63030 0%,#ff7a7a 60%,transparent 100%);
+}
+
+/* ───────── IDENTITY BLOCK ───────── */
+.identity-block{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 22px 16px;
+  border-bottom:1px solid #f0f2f8;
+}
+
+/* PHOTO (SQUARE) */
+.photo-ring{
+  width:82px;
+  height:82px;
+  flex-shrink:0;
+  border-radius:16px;
+  border:3px solid #e63030;
+  box-shadow:0 0 0 3px rgba(230,48,48,0.12);
+  overflow:hidden;
+  background:#e8eaf0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.photo-placeholder{
+  width:100%;
+  height:100%;
+  border-radius:12px;
+  background:linear-gradient(140deg,#cdd1e6,#b0b8d4);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* TEXT */
+.name-role{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.emp-name{
+  font-size:18px;
+  font-weight:700;
+  color:#111425;
+}
+
+.emp-role{
+  font-size:10px;
+  font-weight:600;
+  color:#e63030;
+  letter-spacing:2px;
+}
+
+/* ───────── INFO SECTION ───────── */
+.info-section{
+  padding:14px 22px 6px;
+  flex:1; /* NEW: Allow section to grow and push footer down */
+}
+
+.info-row{
+  display:flex;
+  gap:10px;
+  padding:7px 0;
+  border-bottom:1px solid #f4f5f9;
+}
+
+.i-icon{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  background:#f4f5fb;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.i-label{
+  font-size:8.5px;
+  color:#a8afc8;
+}
+
+.i-val{
+  font-size:11.5px;
+  color:#111425;
+}
+
+/* Red accent line below top band */
+.red-line{
+  height:3px;
+  background:linear-gradient(90deg,#e63030 0%,#ff7a7a 60%,transparent 100%);
+}
+
+/* Photo + name block */
+.identity-block{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 22px 16px;
+  border-bottom:1px solid #f0f2f8;
+}
+
+.photo-ring{
+  width:82px;height:82px;flex-shrink:0;
+  border-radius:18px;
+  border:3px solid #e63030;
+  box-shadow:0 0 0 3px rgba(230,48,48,0.12);
+  overflow:hidden;background:#e8eaf0;
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-placeholder{
+  width:100%;height:100%;
+  border-radius:14px;
+  background:linear-gradient(140deg,#cdd1e6,#b0b8d4);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;
+}
+.photo-placeholder svg{width:28px;height:28px;opacity:0.45;}
+.photo-placeholder small{
+  font-size:6.5px;color:rgba(17,20,37,0.45);
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+.name-role{flex:1;display:flex;flex-direction:column;gap:4px;}
+.emp-name{
+  font-size:18px;font-weight:700;color:#111425;
+  letter-spacing:-0.3px;line-height:1.1;
+}
+.emp-role{
+  font-size:10px;font-weight:600;color:#e63030;
+  letter-spacing:2.5px;text-transform:uppercase;
+}
+.dept-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:4px;
+  background:#f4f5fb;border-radius:20px;
+  padding:3px 10px;width:fit-content;
+}
+.dept-tag .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#e63030;
+}
+.dept-tag span{
+  font-size:9px;font-weight:600;color:#6b7090;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+/* Info section */
+.info-section{padding:14px 22px 6px;}
+
+.info-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:7px 0;
+  border-bottom:1px solid #f4f5f9;
+}
+.info-row:last-child{border-bottom:none;}
+
+.i-icon{
+  width:28px;height:28px;flex-shrink:0;
+  border-radius:8px;background:#f4f5fb;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:1px;
+}
+.i-icon svg{
+  width:12px;height:12px;stroke:#111425;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+.i-label{
+  font-size:8.5px;font-weight:600;color:#a8afc8;
+  text-transform:uppercase;letter-spacing:1.2px;margin-bottom:2px;
+}
+.i-val{font-size:11.5px;font-weight:500;color:#111425;line-height:1.35;}
+
+/* ID + barcode footer */
+.front-footer{
+  background:#efefef;
+  padding:11px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;
+  margin-top:auto; /* NEW: Push footer to bottom */
+}
+.front-footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,#e63030,rgba(230,48,48,0.1));
+}
+
+.id-block .id-label{
+  font-size:8px;font-weight:600;color:rgba(17,20,37,0.6);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;
+}
+.id-block .id-num{
+  font-family:'Space Mono',monospace;
+  font-size:12px;font-weight:700;color:#111425;letter-spacing:2px;
+}
+
+.barcode-col{display:flex;align-items:center;flex-direction:column;gap:3px;}
+.barcode-wrap{display:flex;align-items:flex-end;gap:1.5px;height:26px;}
+.barcode-wrap span{
+  display:inline-block;background:rgba(17,20,37,0.78);
+  border-radius:1px;
+}
+.barcode-row{
+  display:flex;align-items:center;gap:10px;
+  margin-top:8px;
+}
+.valid-text{
+  font-size:7.5px;color:rgba(17,20,37,0.55);
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+
+.barcode-wrap{
+  cursor:pointer;transition:opacity 0.2s;
+}
+.barcode-wrap:hover{
+  opacity:0.8;
+}
+
+
+/* ══ BACK ══ */
+.card-back{
+  background:#efefef;
+  color:#111425;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  height:100%; /* NEW: Fill card height */
+}
+
+/* Architectural decoration */
+.back-deco{
+  position:absolute;inset:0;pointer-events:none;
+}
+.back-deco svg{
+  width:100%;height:100%;
+  position:absolute;top:0;left:0;
+}
+
+/* Back ID Section (Employee ID + QR Code at top) */
+.back-id-section{
+  background:#efefef;
+  padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;
+  z-index:2;
+}
+
+/* Top: both logos */
+.back-header{
+  padding:22px 22px 18px;
+  border-bottom:1px solid rgba(17,20,37,0.14);
+  position:relative;z-index:2;
+}
+
+.back-logo-row{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.back-icon{
+  width:46px;height:46px;
+  border-radius:12px;
+  background:rgba(17,20,37,0.05);
+  border:1px solid rgba(17,20,37,0.12);
+  padding:5px;object-fit:contain;
+}
+
+.back-wordmark-wrap{
+  background:rgba(255,255,255,0.5);
+  border-radius:9px;
+  padding:5px 12px;
+  display:flex;align-items:center;
+}
+.back-wordmark{height:28px;object-fit:contain;display:block;}
+
+.back-sub{
+  font-size:8.5px;font-weight:500;
+  color:rgba(17,20,37,0.58);
+  letter-spacing:2.5px;text-transform:uppercase;
+}
+
+/* Thin red rule */
+.back-redline{
+  height:2px;
+  background:linear-gradient(90deg,#e63030,rgba(230,48,48,0));
+  position:relative;z-index:2;
+}
+
+/* Contact list */
+.back-contacts{
+  padding:18px 22px;
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;z-index:2;
+  flex:1; /* NEW: Allow to grow and push content down */
+}
+
+.section-label{
+  font-size:8px;font-weight:700;
+  color:rgba(17,20,37,0.58);
+  letter-spacing:3.5px;text-transform:uppercase;
+  margin-bottom:4px;
+}
+
+.c-row{display:flex;align-items:flex-start;gap:12px;}
+
+.c-icon{
+  width:34px;height:34px;flex-shrink:0;
+  border-radius:10px;
+  background:rgba(230,48,48,0.08);
+  border:1px solid rgba(230,48,48,0.15);
+  display:flex;align-items:center;justify-content:center;
+}
+.c-icon svg{
+  width:14px;height:14px;stroke:#e63030;fill:none;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+
+.c-label{
+  font-size:8px;color:rgba(17,20,37,0.62);
+  text-transform:uppercase;letter-spacing:1.5px;margin-bottom:2px;
+}
+.c-val{font-size:12px;color:#111425;line-height:1.4;}
+
+/* Divider */
+.back-divider{
+  height:1px;
+  background:rgba(17,20,37,0.14);
+  margin:0 22px;
+  position:relative;z-index:2;
+}
+
+/* Bottom notice */
+.back-notice{
+  padding:14px 22px 20px;
+  display:flex;align-items:flex-start;gap:14px;
+  position:relative;z-index:2;
+}
+
+.notice-icon{
+  width:38px;height:38px;flex-shrink:0;
+  border-radius:10px;
+  background:rgba(230,48,48,0.08);
+  border:1px solid rgba(230,48,48,0.15);
+  display:flex;align-items:center;justify-content:center;
+}
+.notice-icon svg{
+  width:16px;height:16px;stroke:#e63030;fill:none;
+  stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;
+}
+
+.notice-text{flex:1;}
+.n-title{
+  font-size:9.5px;font-weight:700;
+  color:rgba(17,20,37,0.78);
+  text-transform:uppercase;letter-spacing:1.8px;margin-bottom:5px;
+}
+.notice-text p{
+  font-size:10px;line-height:1.5;
+  color:rgba(17,20,37,0.68);
+}
+
+/* Red base strip */
+.back-base{
+  height:8px;
+  background:linear-gradient(90deg,#e63030,#ff5050);
+  margin-top:auto; /* NEW: Push to bottom */
+  position:relative;z-index:2;
+}
+
+/* QR code styling */
+.qrcode{
+  width:80px;
+  height:80px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.7);
+  border-radius:12px;
+  padding:6px;
+  border:1px solid rgba(17,20,37,0.12);
+}
+.qrcode img{
+  width:100%;
+  height:100%;
+  image-rendering:pixelated;
+}
+
+</style>
+</head>
+<body>
+
+<div class="cards-row">
+
+<!-- ════ FRONT ════ -->
+<div class="id-card">
+<div class="card-front">
+
+  <div class="front-top">
+    <div class="logo-row">
+      <img src="gw_logo.png" alt="Greywood Homes Logo" class="logo-wordmark">
+    </div>
+  </div>
+
+  <div class="red-line"></div>
+
+  <div class="identity-block">
+    <div class="photo-ring">
+      <div class="photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+        </svg>
+        <small>Photo</small>
+      </div>
+    </div>
+    <div class="name-role">
+      <div class="emp-name" id="emp-name">Tanu Sharma</div>
+      <div class="emp-role" id="emp-role">Business<br>Development Executive</div>
+      <div class="dept-tag">
+        <div class="dot"></div>
+        <span id="emp-dept">Sales & Marketing</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <div class="info-row">
+      <div class="i-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.43 2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></div>
+      <div><div class="i-label">Mobile</div><div class="i-val" id="emp-mobile">+91 9084428173</div></div>
+    </div>
+    <div class="info-row">
+      <div class="i-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div><div class="i-label">Email</div><div class="i-val" id="emp-email">sales@greywood.in</div></div>
+    </div>
+    <div class="info-row">
+      <div class="i-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 13 8 13s8-7.75 8-13a8 8 0 0 0-8-8z"/></svg></div>
+      <div><div class="i-label">Office</div><div class="i-val" id="emp-office">12, Block 38/4B, Friends Centre,<br>Sanjay Place, Agra – 282002, UP</div></div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+<!-- ════ BACK ════ -->
+<div class="id-card back">
+<div class="card-back">
+
+  <!-- Background decoration -->
+  <div class="back-deco">
+    <svg viewBox="0 0 348 520" fill="none" preserveAspectRatio="none">
+      <line x1="348" y1="0" x2="0" y2="520" stroke="rgba(230,48,48,0.05)" stroke-width="2"/>
+      <line x1="348" y1="60" x2="60" y2="520" stroke="rgba(230,48,48,0.03)" stroke-width="1.5"/>
+      <line x1="250" y1="0" x2="0" y2="420" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+      <circle cx="348" cy="0" r="200" stroke="rgba(230,48,48,0.04)" stroke-width="1.5" fill="none"/>
+      <circle cx="348" cy="0" r="130" stroke="rgba(230,48,48,0.03)" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- 1. Employee ID + QR Code Section -->
+  <div class="back-id-section">
+    <div class="id-block">
+      <div class="id-label">Employee ID</div>
+      <div class="id-num" id="employee-id">GR015</div>
+    </div>
+    
+    <div class="barcode-col">
+      <div class="barcode-wrap" id="bc"></div>
+      <div class="qrcode" id="qrcode"></div>
+    </div>
+  </div>
+
+  <!-- 2. Red line -->
+  <div class="back-redline"></div>
+
+  <!-- 3. Company Contacts -->
+  <div class="back-contacts">
+    <div class="section-label">Company Contacts</div>
+
+    <div class="c-row">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+      <div><div class="c-label">Email</div><div class="c-val">info@greywood.homes</div></div>
+    </div>
+
+    <div class="c-row">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <div><div class="c-label">Website</div><div class="c-val">www.greywood.homes</div></div>
+    </div>
+
+    <div class="c-row">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 13 8 13s8-7.75 8-13a8 8 0 0 0-8-8z"/></svg></div>
+      <div><div class="c-label">Head Office</div><div class="c-val">12, Block 38/4B, Friends Centre,<br>Third Floor, Sanjay Place,<br>Agra – 282002, Uttar Pradesh</div></div>
+    </div>
+  </div>
+
+  <!-- 4. Divider -->
+  <div class="back-divider"></div>
+
+  <!-- 5. Important Notice -->
+  <div class="back-notice">
+    <div class="notice-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <div class="notice-text">
+      <div class="n-title">Important Notice</div>
+      <p>This card is the property of Greywood Homes Pvt. Ltd. If found, kindly return to the above address. Misuse is a punishable offence. Valid only with authorized stamp &amp; signature.</p>
+    </div>
+  </div>
+
+  <!-- 6. Red base strip -->
+  <div class="back-base"></div>
+
+</div>
+</div>
+
+</div>
+
+<script>
+const employeeData = {
+  id: 'GR015',
+  name: 'Tanu Sharma',
+  role: 'Business Development Executive',
+  department: 'Sales & Marketing',
+  phone: '+91 9084428173',
+  email: 'sales@greywood.in',
+  office: 'Agra Office'
+};
+
+const baseURL = "https://greywoodhomes.github.io/idcard/employee.html";
+
+window.onload = function () {
+
+  // Generate QR with URL
+  const qrData = `${baseURL}?id=${encodeURIComponent(employeeData.id)}`;
+
+  const canvas = document.getElementById('qrcode');
+
+  QRCode.toDataURL(qrData, function (err, url) {
+  if (err) return console.error(err);
+
+  const img = document.createElement("img");
+  img.src = url;
+
+  document.getElementById("qrcode").appendChild(img);
+});
+
+};
+
+</script>
+</body>
+</html>
