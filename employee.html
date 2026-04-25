@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 const database = {
   "GWH·2024·0042": {
     id: 'GR015',
@@ -51,4 +51,72 @@ window.onload = function () {
     document.body.innerHTML = "Invalid Employee ID";
   }
 };
+</script> -->
+
+
+
+<script>
+const database = {
+  "GWH·2024·0042": {
+    id: 'GR015',
+    name: 'Tanu Sharma',
+    role: 'Business Development Executive',
+    department: 'Sales & Marketing',
+    phone: '+91 9284428173',
+    email: 'sales@greywood.in',
+    office: '12, Block 38/4B, Friends Centre, Sanjay Place, Agra – 282002, UP',
+  }
+};
+
+function getIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+function downloadCSV(data) {
+  const rows = [
+    ['Field','Value'],
+    ['Employee ID', data.id],
+    ['Name', data.name],
+    ['Role', data.role],
+    ['Department', data.department],
+    ['Phone', data.phone],
+    ['Email', data.email],
+    ['Office', data.office]
+  ];
+
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+
+  link.href = URL.createObjectURL(blob);
+  link.download = `${data.id}.csv`;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const id = getIdFromURL();
+
+  if (database[id]) {
+    const data = database[id];
+
+    // ✅ Show UI instead of auto download
+    document.body.innerHTML = `
+      <div style="text-align:center; margin-top:80px; font-family:sans-serif;">
+        <h2>${data.name}</h2>
+        <p>${data.role}</p>
+        <button onclick="downloadCSV(database['${id}'])"
+          style="padding:12px 20px; font-size:16px; background:#e63030; color:white; border:none; border-radius:8px;">
+          Download CSV
+        </button>
+      </div>
+    `;
+  } else {
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;'>Invalid Employee ID</h2>";
+  }
+});
 </script>
